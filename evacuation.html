@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evacuation Planning | Sea Level Rise Impact Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #e8f4f8;
+      line-height: 1.6;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(6, 23, 42, 0.62) 0%, rgba(9, 35, 58, 0.55) 50%, rgba(12, 44, 73, 0.6) 100%), url('background.jpg') center center / cover no-repeat fixed;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    header {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(100, 210, 255, 0.2);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #64d2ff 0%, #7dd3fc 25%, #a5f3fc 50%, #7dd3fc 75%, #64d2ff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    header ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    header a {
+      color: rgba(200, 230, 255, 0.9);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s ease;
+    }
+    header a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7dd3fc, #a5f3fc);
+      transition: width 0.3s ease;
+    }
+    header a:hover::after,
+    header a.active::after { width: 100%; }
+    header a:hover { color: #7dd3fc; }
+    header a.active {
+      color: #7dd3fc;
+      font-weight: 500;
+    }
+    header a:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #67e8f9;
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero {
+      background: rgba(6, 23, 42, 0.5);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(100, 210, 255, 0.25);
+      color: white;
+      padding: 3rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      animation: fadeInUp 0.7s ease-out forwards;
+      transition: all 0.3s ease;
+    }
+    .hero:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(100, 210, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(100, 210, 255, 0.4);
+    }
+
+    .hero h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #a5f3fc;
+    }
+    .hero .tagline {
+      margin: 0 0 1.5rem 0;
+      font-size: 1rem;
+      color: rgba(165, 243, 252, 0.9);
+      font-weight: 500;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 1.1rem;
+      max-width: 900px;
+      color: rgba(232, 244, 248, 0.95);
+    }
+
+    section {
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease-out both;
+      opacity: 0;
+    }
+    main > section:nth-child(1) { animation-delay: 0.1s; }
+    main > section:nth-child(2) { animation-delay: 0.2s; }
+    main > section:nth-child(3) { animation-delay: 0.3s; }
+    main > section:nth-child(4) { animation-delay: 0.4s; }
+    main > section:nth-child(5) { animation-delay: 0.5s; }
+    main > section:nth-child(6) { animation-delay: 0.6s; }
+
+    .section-separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(100, 210, 255, 0.3) 20%, rgba(100, 210, 255, 0.3) 80%, transparent);
+      margin: 2rem 0;
+      border: none;
+    }
+
+    section h3 {
+      color: #7dd3fc;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid rgba(125, 211, 252, 0.5);
+      padding-bottom: 0.5rem;
+    }
+
+    /* Risk Level Cards */
+    .risk-levels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .risk-card {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.75rem;
+      border-radius: 16px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .risk-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.35);
+    }
+
+    .risk-card.low { border-left: 4px solid #22d3ee; }
+    .risk-card.medium { border-left: 4px solid #14b8a6; }
+    .risk-card.high { border-left: 4px solid #38bdf8; }
+    .risk-card.low:hover { border-left-color: #67e8f9; }
+    .risk-card.medium:hover { border-left-color: #5eead4; }
+    .risk-card.high:hover { border-left-color: #7dd3fc; }
+
+    .risk-card .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .risk-card.low .badge {
+      background: rgba(34, 211, 238, 0.2);
+      color: #67e8f9;
+    }
+    .risk-card.medium .badge {
+      background: rgba(20, 184, 166, 0.2);
+      color: #5eead4;
+    }
+    .risk-card.high .badge {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+    }
+
+    .risk-card h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.25rem;
+      color: #a5f3fc;
+    }
+
+    .risk-card .elevation {
+      font-size: 0.9rem;
+      color: rgba(200, 230, 255, 0.8);
+      margin-bottom: 1rem;
+    }
+    .risk-card .elevation span {
+      color: #67e8f9;
+      font-weight: 600;
+    }
+
+    .risk-card p {
+      margin: 0 0 1rem 0;
+      font-size: 0.95rem;
+      color: rgba(200, 230, 255, 0.85);
+      line-height: 1.6;
+    }
+
+    .risk-card .action {
+      font-size: 0.85rem;
+      color: rgba(165, 243, 252, 0.9);
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    /* Impact Cards */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .impact-card {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.75rem;
+      border-radius: 16px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .impact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.35);
+    }
+    .impact-card:nth-child(1) { border-left: 4px solid #22d3ee; }
+    .impact-card:nth-child(2) { border-left: 4px solid #14b8a6; }
+
+    .impact-card .icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .impact-card h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.2rem;
+      color: #67e8f9;
+    }
+
+    .impact-card ul {
+      margin: 0;
+      padding: 0 0 0 1.25rem;
+      color: rgba(200, 230, 255, 0.85);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .section-intro p {
+      margin: 0 0 1rem 0;
+      font-size: 1rem;
+      color: rgba(232, 244, 248, 0.9);
+      max-width: 800px;
+    }
+    .section-intro strong {
+      color: #67e8f9;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #7dd3fc;
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover {
+      color: #a5f3fc;
+    }
+
+    footer {
+      margin-top: 3rem;
+      background: rgba(6, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(100, 210, 255, 0.2);
+      color: rgba(232, 244, 248, 0.9);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    footer p + p {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: rgba(200, 230, 255, 0.7);
+    }
+  </style>
+  
+</head>
+
+<body>
+<header>
+  <nav>
+    <h1>Sea Level Rise Impact Dashboard</h1>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="risk.html">Risk Analysis</a></li>
+      <li><a href="evacuation.html" class="active">Evacuation</a></li>
+      <li><a href="visuals.html">Data &amp; Visuals</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Evacuation Planning</h2>
+    <p class="tagline">Preparing coastal communities for safe and timely response</p>
+    <p>
+      As sea levels rise and storm surges intensify, evacuation planning becomes
+      essential to protect human life. This section focuses on identifying
+      vulnerable populations, prioritizing response strategies, and ensuring
+      effective coordination during coastal emergencies.
+    </p>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- HIGH RISK ZONES -->
+  <section>
+    <h3>High-Risk Population Zones</h3>
+    <p class="section-intro">
+      Certain regions and communities face heightened evacuation risks due to
+      low elevation, population density, and limited infrastructure.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>Coastal Settlements</h4>
+        <p>
+          Low-lying coastal settlements experience frequent flooding and erosion.
+          Limited access to elevated shelters increases evacuation urgency during
+          extreme events.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Urban Coastal Cities</h4>
+        <p>
+          Dense urban areas face complex evacuation challenges due to traffic
+          congestion, high-rise buildings, and constrained evacuation routes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- PRIORITIES -->
+  <section>
+    <h3>Evacuation Priorities</h3>
+    <p class="section-intro">
+      Evacuation priorities are based on exposure level, population vulnerability,
+      and available response time.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>High Priority — Immediate Threat Zones</h4>
+        <p>
+          Areas below critical elevation thresholds where flooding is imminent.
+          Immediate evacuation is required to prevent loss of life.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Medium Priority — Short-Term Impact Zones</h4>
+        <p>
+          Regions likely to be affected within hours or days, allowing phased
+          evacuation and shelter preparation.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Low Priority — Preparedness Zones</h4>
+        <p>
+          Areas currently safe but at future risk, focusing on monitoring,
+          awareness, and emergency preparedness.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- FUTURE SCOPE -->
+  <section>
+    <h3>Future Scope</h3>
+    <p class="section-intro">
+      Advancing evacuation planning through technology, real-time data, and
+      community-focused preparedness strategies.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>🚨 Real-Time Warning Systems</h4>
+        <ul>
+          <li>Integration with early-warning alerts for storms and surges</li>
+          <li>Automated evacuation notifications for high-risk zones</li>
+          <li>Mobile-based alerts for rapid public communication</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>🗺️ Smart Evacuation Mapping</h4>
+        <ul>
+          <li>Dynamic routing based on flood conditions</li>
+          <li>Identification of safe shelters and elevated zones</li>
+          <li>Live route updates during emergencies</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>👥 Community Preparedness</h4>
+        <ul>
+          <li>Evacuation drills for vulnerable populations</li>
+          <li>Public awareness and disaster education programs</li>
+          <li>Coordination with local authorities and responders</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Sea Level Rise Impact Dashboard · Supporting Coastal Decision-Making</p>
+  <p>Potential data sources: NASA, NOAA, World Bank, IPCC · Illustrative data</p>
+</footer>
+</body>
+</html>
