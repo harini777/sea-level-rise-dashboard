@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About &amp; Methodology | Sea Level Rise Impact Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #e8f4f8;
+      line-height: 1.6;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(6, 23, 42, 0.62) 0%, rgba(9, 35, 58, 0.55) 50%, rgba(12, 44, 73, 0.6) 100%), url('background.jpg') center center / cover no-repeat fixed;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    header {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(100, 210, 255, 0.2);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #64d2ff 0%, #7dd3fc 25%, #a5f3fc 50%, #7dd3fc 75%, #64d2ff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    header ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    header a {
+      color: rgba(200, 230, 255, 0.9);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s ease;
+    }
+    header a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7dd3fc, #a5f3fc);
+      transition: width 0.3s ease;
+    }
+    header a:hover::after,
+    header a.active::after { width: 100%; }
+    header a:hover { color: #7dd3fc; }
+    header a.active {
+      color: #7dd3fc;
+      font-weight: 500;
+    }
+    header a:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #67e8f9;
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero {
+      background: rgba(6, 23, 42, 0.5);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(100, 210, 255, 0.25);
+      color: white;
+      padding: 3rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      animation: fadeInUp 0.7s ease-out forwards;
+      transition: all 0.3s ease;
+    }
+    .hero:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(100, 210, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(100, 210, 255, 0.4);
+    }
+
+    .hero h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #a5f3fc;
+    }
+    .hero .tagline {
+      margin: 0 0 1rem 0;
+      font-size: 1rem;
+      color: rgba(165, 243, 252, 0.9);
+      font-weight: 500;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 1.1rem;
+      max-width: 900px;
+      color: rgba(232, 244, 248, 0.95);
+    }
+
+    section {
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease-out both;
+      opacity: 0;
+    }
+    main > section:nth-child(1) { animation-delay: 0.1s; }
+    main > section:nth-child(2) { animation-delay: 0.2s; }
+    main > section:nth-child(3) { animation-delay: 0.3s; }
+    main > section:nth-child(4) { animation-delay: 0.4s; }
+    main > section:nth-child(5) { animation-delay: 0.5s; }
+    main > section:nth-child(6) { animation-delay: 0.6s; }
+
+    .section-separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(100, 210, 255, 0.3) 20%, rgba(100, 210, 255, 0.3) 80%, transparent);
+      margin: 2rem 0;
+      border: none;
+    }
+
+    section h3 {
+      color: #7dd3fc;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid rgba(125, 211, 252, 0.5);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.75rem;
+      border-radius: 16px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.35);
+    }
+    .content-card:nth-child(1) { border-left: 4px solid #22d3ee; }
+    .content-card:nth-child(2) { border-left: 4px solid #14b8a6; }
+    .content-card:nth-child(3) { border-left: 4px solid #38bdf8; }
+    .content-card:nth-child(4) { border-left: 4px solid #22d3ee; }
+
+    .content-card h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.2rem;
+      color: #67e8f9;
+    }
+
+    .content-card p,
+    .content-card ul {
+      margin: 0 0 1rem 0;
+      font-size: 0.95rem;
+      color: rgba(200, 230, 255, 0.9);
+      line-height: 1.7;
+    }
+    .content-card ul {
+      padding: 0 0 0 1.25rem;
+    }
+    .content-card li {
+      margin-bottom: 0.5rem;
+    }
+    .content-card p:last-child,
+    .content-card ul:last-child {
+      margin-bottom: 0;
+    }
+    .content-card strong {
+      color: #a5f3fc;
+    }
+
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .source-card {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .source-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.35);
+    }
+    .source-card:nth-child(1) { border-left: 4px solid #22d3ee; }
+    .source-card:nth-child(2) { border-left: 4px solid #14b8a6; }
+    .source-card:nth-child(3) { border-left: 4px solid #38bdf8; }
+    .source-card:nth-child(4) { border-left: 4px solid #5eead4; }
+
+    .source-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .source-card h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: #67e8f9;
+    }
+
+    .source-card .url {
+      font-size: 0.85rem;
+      color: rgba(165, 243, 252, 0.8);
+      word-break: break-all;
+      margin-top: 0.5rem;
+    }
+
+    .source-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: rgba(200, 230, 255, 0.85);
+      line-height: 1.6;
+    }
+
+    .section-intro {
+      margin-bottom: 1.5rem;
+    }
+    .section-intro p {
+      margin: 0;
+      font-size: 1rem;
+      color: rgba(232, 244, 248, 0.9);
+      max-width: 800px;
+    }
+    .section-intro strong {
+      color: #67e8f9;
+    }
+
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #7dd3fc;
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover {
+      color: #a5f3fc;
+    }
+
+    footer {
+      margin-top: 3rem;
+      background: rgba(6, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(100, 210, 255, 0.2);
+      color: rgba(232, 244, 248, 0.9);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    footer p + p {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: rgba(200, 230, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <h1>Sea Level Rise Impact Dashboard</h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="risk.html">Risk Analysis</a></li>
+        <li><a href="evacuation.html">Evacuation</a></li>
+        <li><a href="visuals.html">Data &amp; Visuals</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <section class="hero">
+      <h2>About &amp; Methodology</h2>
+      <p class="tagline">Transparency in data sources, assumptions, and methodology</p>
+      <p>
+        This dashboard is designed to support coastal decision-making by presenting risk analysis, evacuation planning,
+        and visual insights in an accessible format. <strong>Currently, the dashboard uses illustrative and representative data</strong>—not live API feeds. This page explains the methodology behind the content, where real data would come from in a future version, and the limitations of the current implementation.
+      </p>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Current Data &amp; Potential Sources</h3>
+      <p class="section-intro"><strong>What we use now:</strong> All figures, stats, and risk classifications are illustrative—derived from general knowledge and literature. <strong>Potential sources for live data:</strong> For future API integration, the following organizations provide relevant data:</p>
+      <div class="source-grid">
+        <div class="source-card">
+          <div class="icon">🌍</div>
+          <h4>NASA</h4>
+          <p>Sea level observations, satellite altimetry, and climate projections. NASA's Climate Change and Sea Level Portal provides global and regional trends. <em>Not yet integrated.</em></p>
+          <p class="url">climate.nasa.gov</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">🌊</div>
+          <h4>NOAA</h4>
+          <p>Coastal inundation data, tide gauges, and extreme water level forecasts. NOAA's Office for Coastal Management supports flood mapping and resilience planning. <em>Not yet integrated.</em></p>
+          <p class="url">coast.noaa.gov</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">🏦</div>
+          <h4>World Bank</h4>
+          <p>Economic impact assessments, population exposure estimates, and infrastructure risk data for coastal regions worldwide. <em>Not yet integrated.</em></p>
+          <p class="url">worldbank.org</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">📊</div>
+          <h4>IPCC</h4>
+          <p>Intergovernmental Panel on Climate Change reports provide sea level rise scenarios (SSP-based) and consensus projections. Our methodology is informed by these reports. <em>Not yet integrated.</em></p>
+          <p class="url">ipcc.ch</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Methodology &amp; Assumptions</h3>
+      <p class="section-intro">The content on this dashboard follows methodology commonly used in coastal planning. Since we use illustrative data, these describe <strong>how the content was derived</strong>—not how live data is processed:</p>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Risk Zoning Framework</h4>
+          <p>Coastal zones are classified by <strong>elevation above mean sea level</strong> and <strong>exposure to flooding</strong>. Low risk (&gt;3m), medium risk (1–3m), and high risk (&lt;1m) thresholds follow common practices in coastal planning literature. These are illustrative—actual zoning would use site-specific elevation data and local flood models.</p>
+        </div>
+        <div class="content-card">
+          <h4>Projection Scenarios</h4>
+          <p>Sea level rise figures (e.g., ~30 cm by 2050) align with <strong>IPCC AR6</strong> and <strong>NOAA</strong> mid-range scenarios. We use these as representative values. Actual outcomes depend on emissions pathways and regional factors such as land subsidence and ocean currents.</p>
+        </div>
+        <div class="content-card">
+          <h4>Impact Assessments</h4>
+          <p>Infrastructure and settlement impacts are drawn from <strong>literature and case studies</strong>. Population and economic exposure figures (e.g., 200M+ at risk) are illustrative placeholders; real-world assessments require local census data, asset inventories, and engineering models.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Limitations</h3>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Data &amp; Scope</h4>
+          <ul>
+            <li><strong>Static data:</strong> Current dashboard uses representative values, not live API feeds or real-time measurements.</li>
+            <li><strong>Global averages:</strong> Local conditions (subsidence, tides, storms) vary significantly and are not fully reflected.</li>
+            <li><strong>Simplified models:</strong> Elevation-based zoning does not replace detailed hydraulic or flood modeling for specific sites.</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h4>Use Context</h4>
+          <ul>
+            <li>This dashboard is for <strong>educational and planning support</strong>, not regulatory or legal compliance.</li>
+            <li>Official flood maps and zoning decisions should rely on government-issued data and approved methodologies.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Future Scope</h3>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Planned Enhancements</h4>
+          <ul>
+            <li><strong>API integration:</strong> Connect to NASA, NOAA, or similar APIs for real-time or updated sea level and coastal data.</li>
+            <li><strong>Interactive maps:</strong> Add map-based visualization of risk zones and evacuation routes.</li>
+            <li><strong>Regional focus:</strong> Allow users to select specific coastal regions for localized analysis.</li>
+            <li><strong>Scenario comparison:</strong> Compare low, mid, and high emissions scenarios side by side.</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h4>Contributions</h4>
+          <p>Suggestions for additional data sources, methodology improvements, or features are welcome. This project aims to evolve with the needs of coastal planners and communities.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sea Level Rise Impact Dashboard &middot; Supporting Coastal Decision-Making</p>
+    <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sea Level Rise Impact Dashboard | Home</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #e8f4f8;
+      line-height: 1.6;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(6, 23, 42, 0.62) 0%, rgba(9, 35, 58, 0.55) 50%, rgba(12, 44, 73, 0.6) 100%), url('background2.jpg') center center / cover no-repeat fixed;
+    }
+    /* Replace background.jpg with your own image path */
+
+    /* Entrance animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    header {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(100, 210, 255, 0.2);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #64d2ff 0%, #7dd3fc 25%, #a5f3fc 50%, #7dd3fc 75%, #64d2ff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    header ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    header a {
+      color: rgba(200, 230, 255, 0.9);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s ease;
+    }
+    header a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7dd3fc, #a5f3fc);
+      transition: width 0.3s ease;
+    }
+    header a:hover::after,
+    header a.active::after { width: 100%; }
+    header a:hover { color: #7dd3fc; }
+    header a.active {
+      color: #7dd3fc;
+      font-weight: 500;
+    }
+    header a:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #67e8f9;
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero {
+      background: rgba(6, 23, 42, 0.5);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(100, 210, 255, 0.25);
+      color: white;
+      padding: 3rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      animation: fadeInUp 0.7s ease-out forwards;
+      transition: all 0.3s ease;
+    }
+    .hero:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(100, 210, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(100, 210, 255, 0.4);
+    }
+
+    .hero h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #a5f3fc;
+    }
+    .hero .tagline {
+      margin: 0 0 1.5rem 0;
+      font-size: 1rem;
+      color: rgba(165, 243, 252, 0.9);
+      font-weight: 500;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 1.1rem;
+      max-width: 800px;
+      color: rgba(232, 244, 248, 0.95);
+    }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(100, 210, 255, 0.2);
+    }
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .hero-stat .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #67e8f9;
+      letter-spacing: -0.02em;
+    }
+    .hero-stat .label {
+      font-size: 0.85rem;
+      color: rgba(200, 230, 255, 0.8);
+    }
+
+    section {
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease-out both;
+      opacity: 0;
+    }
+    section:nth-child(1) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.25s; }
+    section:nth-child(5) { animation-delay: 0.4s; }
+    section:nth-child(7) { animation-delay: 0.55s; }
+
+    .section-separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(100, 210, 255, 0.3) 20%, rgba(100, 210, 255, 0.3) 80%, transparent);
+      margin: 2rem 0;
+      border: none;
+    }
+
+    section:last-of-type {
+      margin-bottom: 0;
+    }
+
+    section h3 {
+      color: #7dd3fc;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid rgba(125, 211, 252, 0.5);
+      padding-bottom: 0.5rem;
+    }
+
+    .purpose p {
+      margin: 0;
+      font-size: 1rem;
+      max-width: 900px;
+      color: rgba(232, 244, 248, 0.9);
+    }
+
+    .purpose strong {
+      color: #67e8f9;
+    }
+
+    .highlight-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .highlight-card {
+      background: rgba(6, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .highlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.35);
+    }
+    .highlight-card:nth-child(1):hover { border-left-color: #22d3ee; }
+    .highlight-card:nth-child(2):hover { border-left-color: #14b8a6; }
+    .highlight-card:nth-child(3):hover { border-left-color: #38bdf8; }
+
+    .highlight-card:nth-child(1) { border-left: 4px solid #22d3ee; }
+    .highlight-card:nth-child(2) { border-left: 4px solid #14b8a6; }
+    .highlight-card:nth-child(3) { border-left: 4px solid #38bdf8; }
+
+    .highlight-card h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .highlight-card:nth-child(1) h4 { color: #67e8f9; }
+    .highlight-card:nth-child(2) h4 { color: #5eead4; }
+    .highlight-card:nth-child(3) h4 { color: #7dd3fc; }
+
+    .highlight-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: rgba(200, 230, 255, 0.85);
+    }
+
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .nav-cards a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nav-card {
+      background: rgba(6, 23, 42, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.25s ease;
+    }
+
+    .nav-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 36px rgba(100, 210, 255, 0.2);
+      border-color: rgba(100, 210, 255, 0.4);
+    }
+
+    .nav-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-card h4 {
+      margin: 0 0 0.5rem 0;
+      color: #67e8f9;
+    }
+
+    .nav-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: rgba(200, 230, 255, 0.8);
+    }
+
+    footer {
+      margin-top: 3rem;
+      background: rgba(6, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(100, 210, 255, 0.2);
+      color: rgba(232, 244, 248, 0.9);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    footer p + p {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: rgba(200, 230, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Replace background.jpg in the style above with your own image path -->
+
+  <header>
+    <nav>
+      <h1>Sea Level Rise Impact Dashboard</h1>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="risk.html">Risk Analysis</a></li>
+        <li><a href="evacuation.html">Evacuation</a></li>
+        <li><a href="visuals.html">Data &amp; Visuals</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Understanding Coastal Vulnerability</h2>
+      <p class="tagline">Supporting coastal decision-making for urban zoning and evacuation planning</p>
+      <p>
+        Sea level rise poses a significant threat to coastal communities worldwide. Rising oceans threaten infrastructure,
+        homes, and ecosystems—demanding informed decision-making for urban planning and emergency preparedness.
+        This dashboard provides a centralized platform to analyze risks, plan evacuations, and visualize trends
+        to support policy and community resilience.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="value">200M+</span>
+          <span class="label">People at risk globally</span>
+        </div>
+        <div class="hero-stat">
+          <span class="value">~30 cm</span>
+          <span class="label">Rise projected by 2050</span>
+        </div>
+        <div class="hero-stat">
+          <span class="value">90%</span>
+          <span class="label">Coastal cities affected</span>
+        </div>
+        <div class="hero-stat">
+          <span class="value">$1T+</span>
+          <span class="label">Infrastructure at risk</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section class="purpose">
+      <h3>Dashboard Purpose</h3>
+      <p>
+        The Sea Level Rise Impact Dashboard is designed to support <strong>urban coastal zoning</strong> and
+        <strong>evacuation planning</strong> by presenting risk analysis, planning insights, and visual summaries
+        in a clear and user-friendly way. Decision-makers, planners, and community stakeholders can use this
+        tool to understand exposure levels, prioritize resources, and develop actionable strategies.
+      </p>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Key Highlights</h3>
+      <div class="highlight-cards">
+        <div class="highlight-card">
+          <h4>Risk Zoning</h4>
+          <p>Low, medium, and high-risk coastal zones mapped for urban planning.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Evacuation Strategy</h4>
+          <p>Priorities and safe zones for emergency preparedness.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Data Insights</h4>
+          <p>Trends and visualizations from NASA, NOAA, and more.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Explore the Dashboard</h3>
+      <div class="nav-cards">
+        <a href="risk.html">
+          <div class="nav-card">
+            <div class="icon">🗺️</div>
+            <h4>Coastal Risk Analysis</h4>
+            <p>Explore risk levels by zone</p>
+          </div>
+        </a>
+        <a href="evacuation.html">
+          <div class="nav-card">
+            <div class="icon">🚨</div>
+            <h4>Evacuation Planning</h4>
+            <p>Priorities &amp; safe zones</p>
+          </div>
+        </a>
+        <a href="visuals.html">
+          <div class="nav-card">
+            <div class="icon">📊</div>
+            <h4>Data &amp; Visualizations</h4>
+            <p>Trends and insights</p>
+          </div>
+        </a>
+        <a href="about.html">
+          <div class="nav-card">
+            <div class="icon">ℹ️</div>
+            <h4>About &amp; Methodology</h4>
+            <p>Sources and assumptions</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sea Level Rise Impact Dashboard &middot; Supporting Coastal Decision-Making</p>
+    <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
+  </footer>
+
+</body>
+</html>
