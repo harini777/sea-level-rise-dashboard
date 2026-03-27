@@ -38,6 +38,42 @@
     <hr class="section-separator">
 
     <section>
+      <h3>Coastal Risk Predictor</h3>
+      <p class="section-intro">Estimate likely coastal impacts from projected sea level rise and review recommended planning actions instantly.</p>
+      <div class="predictor-shell">
+        <div class="predictor-panel">
+          <label for="seaLevelInput">Sea level rise (meters)</label>
+          <div class="predictor-controls">
+            <input id="seaLevelInput" type="number" min="0" step="0.1" placeholder="Enter value in meters">
+            <button id="simulateBtn" type="button">Simulate Impact</button>
+          </div>
+          <p class="predictor-note">Use projected rise values such as <strong>0.8m</strong>, <strong>1.2m</strong>, or <strong>2.4m</strong> to simulate different scenarios.</p>
+        </div>
+
+        <div id="predictorResult" class="predictor-result" hidden>
+          <div class="result-header">
+            <p class="result-eyebrow">Simulation Result</p>
+            <h4 id="riskLevelText">Low Risk</h4>
+          </div>
+          <p id="resultSummary" class="result-summary"></p>
+
+          <div class="result-columns">
+            <div class="result-list-card">
+              <h5>Impact Description</h5>
+              <ul id="impactList"></ul>
+            </div>
+            <div class="result-list-card">
+              <h5>Recommended Actions</h5>
+              <ul id="actionsList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
       <h3>Risk Levels</h3>
       <p class="section-intro">Coastal zones are classified by projected inundation, frequency of flooding, and exposure. Each level informs different planning and regulatory actions.</p>
       <div class="risk-levels">
@@ -128,6 +164,97 @@
     <p>Sea Level Rise Impact Dashboard &middot; Supporting Coastal Decision-Making</p>
     <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
   </footer>
+
+  <script>
+    const seaLevelInput = document.getElementById('seaLevelInput');
+    const simulateBtn = document.getElementById('simulateBtn');
+    const predictorResult = document.getElementById('predictorResult');
+    const riskLevelText = document.getElementById('riskLevelText');
+    const resultSummary = document.getElementById('resultSummary');
+    const impactList = document.getElementById('impactList');
+    const actionsList = document.getElementById('actionsList');
+
+    const scenarios = {
+      low: {
+        label: 'Low Risk',
+        summary: 'Projected rise remains below the medium-risk threshold, but coastal monitoring and basic adaptation remain important.',
+        impacts: [
+          'Occasional nuisance flooding may affect low-lying roads and drainage points.',
+          'Saltwater intrusion risk begins to increase in vulnerable coastal systems.',
+          'Protective infrastructure generally remains effective with regular maintenance.'
+        ],
+        actions: [
+          'Maintain drainage systems and inspect shoreline defenses regularly.',
+          'Update local awareness plans and track yearly sea level measurements.',
+          'Preserve wetlands, dunes, and other natural coastal buffers.'
+        ]
+      },
+      medium: {
+        label: 'Medium Risk',
+        summary: 'Projected rise indicates meaningful exposure for settlements and infrastructure, requiring stronger planning controls.',
+        impacts: [
+          'Periodic flooding can disrupt transport, utilities, and public services.',
+          'Storm surge impacts become more severe and more frequent.',
+          'Housing and commercial assets in low-elevation zones face repeated stress.'
+        ],
+        actions: [
+          'Introduce elevation standards and flood-resistant building design.',
+          'Map vulnerable neighborhoods and prepare phased evacuation strategies.',
+          'Strengthen drainage, seawalls, and emergency coordination systems.'
+        ]
+      },
+      high: {
+        label: 'High Risk',
+        summary: 'Projected rise reaches a critical threshold where severe coastal disruption and long-term relocation planning become likely.',
+        impacts: [
+          'Frequent inundation may make some coastal zones unsafe for continued development.',
+          'Critical infrastructure can face prolonged outages and physical damage.',
+          'Population displacement and ecosystem loss become major planning concerns.'
+        ],
+        actions: [
+          'Restrict new development in the most exposed coastal zones.',
+          'Prioritize evacuation readiness, shelter planning, and emergency response.',
+          'Plan managed retreat, major protective works, or targeted relocation where needed.'
+        ]
+      }
+    };
+
+    function renderList(listElement, items) {
+      listElement.innerHTML = '';
+      items.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        listElement.appendChild(li);
+      });
+    }
+
+    simulateBtn.addEventListener('click', () => {
+      const seaLevelRise = Number(seaLevelInput.value);
+
+      if (Number.isNaN(seaLevelRise) || seaLevelInput.value.trim() === '') {
+        alert('Please enter a valid sea level rise value in meters.');
+        seaLevelInput.focus();
+        return;
+      }
+
+      let scenarioKey = 'low';
+      if (seaLevelRise >= 2) {
+        scenarioKey = 'high';
+      } else if (seaLevelRise >= 1) {
+        scenarioKey = 'medium';
+      }
+
+      const scenario = scenarios[scenarioKey];
+
+      predictorResult.hidden = false;
+      predictorResult.className = 'predictor-result ' + scenarioKey;
+      riskLevelText.textContent = scenario.label;
+      resultSummary.textContent = 'For an estimated sea level rise of ' + seaLevelRise.toFixed(1) + ' meters, the projected coastal outlook is classified as ' + scenario.label + '.';
+
+      renderList(impactList, scenario.impacts);
+      renderList(actionsList, scenario.actions);
+    });
+  </script>
 
 </body>
 </html>
