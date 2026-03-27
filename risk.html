@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coastal Risk Map | Sea Level Rise Impact Dashboard</title>
+
+  <link rel="stylesheet" href="r-style.css">
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
+</head>
+<body>
+  <header>
+    <nav>
+      <h1>Sea Level Rise Impact Dashboard</h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="risk.html" class="active">Risk Analysis</a></li>
+        <li><a href="evacuation.html">Evacuation</a></li>
+        <li><a href="visuals.html">Data &amp; Visuals</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-link">&larr; Back to Home</a>
+
+    <section class="hero">
+      <h2>Interactive Coastal Risk Map</h2>
+      <p class="tagline">Explore risk levels of major Indian coastal cities using map-based analysis</p>
+      <p>
+        This dashboard section highlights how sea level rise can affect Indian coastal cities.
+        Click map markers or city names to inspect risk level and exposure reasons.
+      </p>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Risk Map and City Panel</h3>
+      <p class="section-intro">The map is centered on India by default. Use the city list to focus quickly and compare risk levels.</p>
+
+      <div class="impact-grid">
+        <article class="impact-card">
+          <h4>India Coastal Risk Map</h4>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+            <button id="resetViewBtn" type="button" style="padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#38bdf8;color:#06293f;font-weight:600;">Reset India View</button>
+          </div>
+
+          <div id="riskMap" style="height:460px;border-radius:12px;overflow:hidden;border:1px solid rgba(100,210,255,0.3);"></div>
+
+          <div style="margin-top:14px;padding:12px;border:1px solid rgba(100,210,255,0.25);border-radius:10px;background:rgba(6,23,42,0.35);">
+            <h4 style="margin:0 0 10px 0;color:#a5f3fc;">Legend</h4>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ef4444;margin-right:8px;"></span>High Risk: Frequent flooding, storm surge, and high exposure</p>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f59e0b;margin-right:8px;"></span>Medium Risk: Moderate flood stress and coastal vulnerability</p>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#10b981;margin-right:8px;"></span>Low Risk: Lower current exposure but still monitor long-term risk</p>
+          </div>
+        </article>
+
+        <article class="impact-card">
+          <h4>City Risk Summary</h4>
+          <p style="margin-top:0;">Click a city below to move the map and open its risk popup.</p>
+          <ul id="cityList" style="list-style:none;padding:0;margin:0;"></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sea Level Rise Impact Dashboard &middot; Supporting Coastal Decision-Making</p>
+    <p>Educational demo data for project presentation</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="risk.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data & Visualizations | Sea Level Rise Impact Dashboard</title>
+  <link rel="stylesheet" href="v-style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <h1>Sea Level Rise Impact Dashboard</h1>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="risk.html">Risk Analysis</a></li>
+      <li><a href="evacuation.html">Evacuation</a></li>
+      <li><a href="visuals.html" class="active">Data &amp; Visuals</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Data &amp; Visualizations</h2>
+    <p class="tagline">Visual insights into sea level rise trends</p>
+    <p>
+      Data visualization translates complex climate observations into actionable
+      insights. This section highlights observed trends, future projections, and
+      indicators that inform coastal risk assessment and planning.
+    </p>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- INDICATORS -->
+  <section>
+    <h3>Key Indicators</h3>
+    <p class="section-intro">
+      Scientific measurements and climate models provide measurable indicators
+      of sea level rise and its accelerating impacts.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>🌍 Global Mean Sea Level Rise</h4>
+        <p>
+          Satellite altimetry observations show an average rise of approximately
+          <strong>3.4 mm per year</strong>, with acceleration observed in recent decades.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>📈 Future Projections</h4>
+        <p>
+          Climate models project significant coastal inundation by 2100 under
+          high-emission scenarios, increasing flood frequency and land loss.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- TRENDS -->
+  <section>
+    <h3>Observed Trends</h3>
+    <p class="section-intro">
+      Rising sea levels interact with tides and storms, amplifying coastal hazards.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        Increased frequency of coastal flooding during high tides
+      </div>
+      <div class="impact-card">
+        Accelerated shoreline erosion and loss of coastal ecosystems
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- DECISION INSIGHTS -->
+  <section>
+    <h3>Decision-Making Insights</h3>
+    <p class="section-intro">
+      Visual data supports evidence-based decision-making for long-term coastal
+      adaptation strategies.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        Identification of high-risk zones for infrastructure investment
+      </div>
+      <div class="impact-card">
+        Support for evacuation planning and emergency response strategies
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- REPORT COASTAL RISK -->
+  <section>
+    <h3>Report Coastal Risk</h3>
+    <p class="section-intro">
+      Submit an observed coastal risk report for future review and analysis.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <form>
+          <p>
+            <label for="report-location">Location</label><br>
+            <input
+              type="text"
+              id="report-location"
+              name="report-location"
+              placeholder="Enter coastal city"
+            >
+          </p>
+
+          <p>
+            <label for="report-risk-level">Risk</label><br>
+            <select id="report-risk-level" name="report-risk-level">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </p>
+
+          <p>
+            <button type="submit">Submit Report</button>
+          </p>
+        </form>
+
+        <div id="form-message"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- FUTURE SCOPE -->
+  <section>
+    <h3>Future Scope</h3>
+    <p class="section-intro">
+      Planned enhancements aim to improve accuracy, interactivity, and regional
+      relevance of data-driven coastal analysis.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>🔗 API Integration</h4>
+        <ul>
+          <li>Real-time sea level and tidal data updates</li>
+          <li>Automated long-term trend monitoring</li>
+          <li>Improved data reliability</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>🗺️ Interactive Visualizations</h4>
+        <ul>
+          <li>Map-based flood risk visualization</li>
+          <li>Overlay of evacuation routes and shelters</li>
+          <li>User-controlled data filters</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>📊 Scenario Comparison</h4>
+        <ul>
+          <li>Low, medium, and high emission pathways</li>
+          <li>Side-by-side impact comparison</li>
+          <li>Policy and planning support</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- DATA SOURCES -->
+  <section>
+    <h3>Potential Data Sources</h3>
+    <p class="section-intro">
+      Authoritative organizations providing reliable data for future integration.
+    </p>
+
+    <div class="risk-levels">
+      <div class="risk-card low">
+        <h4>🌍 NASA</h4>
+        <p>Satellite altimetry, sea level observations, and climate projections.</p>
+        <p class="action">climate.nasa.gov · Not yet integrated</p>
+      </div>
+
+      <div class="risk-card medium">
+        <h4>🌊 NOAA</h4>
+        <p>Coastal inundation data, tide gauges, and extreme water level forecasts.</p>
+        <p class="action">coast.noaa.gov · Not yet integrated</p>
+      </div>
+
+      <div class="risk-card high">
+        <h4>🏛️ World Bank</h4>
+        <p>Economic impact assessments and infrastructure risk data.</p>
+        <p class="action">worldbank.org · Not yet integrated</p>
+      </div>
+
+      <div class="risk-card low">
+        <h4>📘 IPCC</h4>
+        <p>Consensus-based climate reports and sea level rise scenarios.</p>
+        <p class="action">ipcc.ch · Not yet integrated</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Sea Level Rise Impact Dashboard · Supporting Coastal Decision-Making</p>
+  <p>Potential data sources: NASA, NOAA, World Bank, IPCC · Illustrative data</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About &amp; Methodology | Sea Level Rise Impact Dashboard</title>
+  <link rel="stylesheet" href="a-style.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <h1>Sea Level Rise Impact Dashboard</h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="risk.html">Risk Analysis</a></li>
+        <li><a href="evacuation.html">Evacuation</a></li>
+        <li><a href="visuals.html">Data &amp; Visuals</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <section class="hero">
+      <h2>About &amp; Methodology</h2>
+      <p class="tagline">Transparency in data sources, assumptions, and methodology</p>
+      <p>
+        This dashboard is designed to support coastal decision-making by presenting risk analysis, evacuation planning,
+        and visual insights in an accessible format. <strong>Currently, the dashboard uses illustrative and representative data</strong>—not live API feeds. This page explains the methodology behind the content, where real data would come from in a future version, and the limitations of the current implementation.
+      </p>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Current Data &amp; Potential Sources</h3>
+      <p class="section-intro"><strong>What we use now:</strong> All figures, stats, and risk classifications are illustrative—derived from general knowledge and literature. <strong>Potential sources for live data:</strong> For future API integration, the following organizations provide relevant data:</p>
+      <div class="source-grid">
+        <div class="source-card">
+          <div class="icon">🌍</div>
+          <h4>NASA</h4>
+          <p>Sea level observations, satellite altimetry, and climate projections. NASA's Climate Change and Sea Level Portal provides global and regional trends. <em>Not yet integrated.</em></p>
+          <p class="url">climate.nasa.gov</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">🌊</div>
+          <h4>NOAA</h4>
+          <p>Coastal inundation data, tide gauges, and extreme water level forecasts. NOAA's Office for Coastal Management supports flood mapping and resilience planning. <em>Not yet integrated.</em></p>
+          <p class="url">coast.noaa.gov</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">🏦</div>
+          <h4>World Bank</h4>
+          <p>Economic impact assessments, population exposure estimates, and infrastructure risk data for coastal regions worldwide. <em>Not yet integrated.</em></p>
+          <p class="url">worldbank.org</p>
+        </div>
+        <div class="source-card">
+          <div class="icon">📊</div>
+          <h4>IPCC</h4>
+          <p>Intergovernmental Panel on Climate Change reports provide sea level rise scenarios (SSP-based) and consensus projections. Our methodology is informed by these reports. <em>Not yet integrated.</em></p>
+          <p class="url">ipcc.ch</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Methodology &amp; Assumptions</h3>
+      <p class="section-intro">The content on this dashboard follows methodology commonly used in coastal planning. Since we use illustrative data, these describe <strong>how the content was derived</strong>—not how live data is processed:</p>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Risk Zoning Framework</h4>
+          <p>Coastal zones are classified by <strong>elevation above mean sea level</strong> and <strong>exposure to flooding</strong>. Low risk (&gt;3m), medium risk (1–3m), and high risk (&lt;1m) thresholds follow common practices in coastal planning literature. These are illustrative—actual zoning would use site-specific elevation data and local flood models.</p>
+        </div>
+        <div class="content-card">
+          <h4>Projection Scenarios</h4>
+          <p>Sea level rise figures (e.g., ~30 cm by 2050) align with <strong>IPCC AR6</strong> and <strong>NOAA</strong> mid-range scenarios. We use these as representative values. Actual outcomes depend on emissions pathways and regional factors such as land subsidence and ocean currents.</p>
+        </div>
+        <div class="content-card">
+          <h4>Impact Assessments</h4>
+          <p>Infrastructure and settlement impacts are drawn from <strong>literature and case studies</strong>. Population and economic exposure figures (e.g., 200M+ at risk) are illustrative placeholders; real-world assessments require local census data, asset inventories, and engineering models.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Limitations</h3>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Data &amp; Scope</h4>
+          <ul>
+            <li><strong>Static data:</strong> Current dashboard uses representative values, not live API feeds or real-time measurements.</li>
+            <li><strong>Global averages:</strong> Local conditions (subsidence, tides, storms) vary significantly and are not fully reflected.</li>
+            <li><strong>Simplified models:</strong> Elevation-based zoning does not replace detailed hydraulic or flood modeling for specific sites.</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h4>Use Context</h4>
+          <ul>
+            <li>This dashboard is for <strong>educational and planning support</strong>, not regulatory or legal compliance.</li>
+            <li>Official flood maps and zoning decisions should rely on government-issued data and approved methodologies.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Future Scope</h3>
+      <div class="cards-stack">
+        <div class="content-card">
+          <h4>Planned Enhancements</h4>
+          <ul>
+            <li><strong>API integration:</strong> Connect to NASA, NOAA, or similar APIs for real-time or updated sea level and coastal data.</li>
+            <li><strong>Interactive maps:</strong> Add map-based visualization of risk zones and evacuation routes.</li>
+            <li><strong>Regional focus:</strong> Allow users to select specific coastal regions for localized analysis.</li>
+            <li><strong>Scenario comparison:</strong> Compare low, mid, and high emissions scenarios side by side.</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h4>Contributions</h4>
+          <p>Suggestions for additional data sources, methodology improvements, or features are welcome. This project aims to evolve with the needs of coastal planners and communities.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sea Level Rise Impact Dashboard &middot; Supporting Coastal Decision-Making</p>
+    <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
+  </footer>
+
+</body>
+</html>

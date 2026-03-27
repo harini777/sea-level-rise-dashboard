@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evacuation Planning | Sea Level Rise Impact Dashboard</title>
+  <link rel="stylesheet" href="e-style.css">
+  
+</head>
+
+<body>
+<header>
+  <nav>
+    <h1>Sea Level Rise Impact Dashboard</h1>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="risk.html">Risk Analysis</a></li>
+      <li><a href="evacuation.html" class="active">Evacuation</a></li>
+      <li><a href="visuals.html">Data &amp; Visuals</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <a href="index.html" class="back-link">&larr; Back to Home</a>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Evacuation Planning</h2>
+    <p class="tagline">Preparing coastal communities for safe and timely response</p>
+    <p>
+      As sea levels rise and storm surges intensify, evacuation planning becomes
+      essential to protect human life. This section focuses on identifying
+      vulnerable populations, prioritizing response strategies, and ensuring
+      effective coordination during coastal emergencies.
+    </p>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- HIGH RISK ZONES -->
+  <section>
+    <h3>High-Risk Population Zones</h3>
+    <p class="section-intro">
+      Certain regions and communities face heightened evacuation risks due to
+      low elevation, population density, and limited infrastructure.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>Coastal Settlements</h4>
+        <p>
+          Low-lying coastal settlements experience frequent flooding and erosion.
+          Limited access to elevated shelters increases evacuation urgency during
+          extreme events.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Urban Coastal Cities</h4>
+        <p>
+          Dense urban areas face complex evacuation challenges due to traffic
+          congestion, high-rise buildings, and constrained evacuation routes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- PRIORITIES -->
+  <section>
+    <h3>Evacuation Priorities</h3>
+    <p class="section-intro">
+      Evacuation priorities are based on exposure level, population vulnerability,
+      and available response time.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>High Priority — Immediate Threat Zones</h4>
+        <p>
+          Areas below critical elevation thresholds where flooding is imminent.
+          Immediate evacuation is required to prevent loss of life.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Medium Priority — Short-Term Impact Zones</h4>
+        <p>
+          Regions likely to be affected within hours or days, allowing phased
+          evacuation and shelter preparation.
+        </p>
+      </div>
+
+      <div class="impact-card">
+        <h4>Low Priority — Preparedness Zones</h4>
+        <p>
+          Areas currently safe but at future risk, focusing on monitoring,
+          awareness, and emergency preparedness.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- INTERACTIVE EVACUATION GUIDANCE -->
+  <section>
+    <h3>Interactive Evacuation Guidance</h3>
+    <p class="section-intro">
+      Select a risk level to receive quick recommended evacuation actions.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>Get Evacuation Plan by Risk Level</h4>
+
+        <label for="riskLevelSelect">Risk Level:</label>
+        <select id="riskLevelSelect">
+          <option value="">-- Select Risk Level --</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+
+        <button id="evacuationPlanBtn" type="button">Get Evacuation Plan</button>
+
+        <div id="evacuationResult" aria-live="polite" style="margin-top: 1rem;"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
+  <!-- FUTURE SCOPE -->
+  <section>
+    <h3>Future Scope</h3>
+    <p class="section-intro">
+      Advancing evacuation planning through technology, real-time data, and
+      community-focused preparedness strategies.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <h4>Real-Time Warning Systems</h4>
+        <ul>
+          <li>Integration with early-warning alerts for storms and surges</li>
+          <li>Automated evacuation notifications for high-risk zones</li>
+          <li>Mobile-based alerts for rapid public communication</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>Smart Evacuation Mapping</h4>
+        <ul>
+          <li>Dynamic routing based on flood conditions</li>
+          <li>Identification of safe shelters and elevated zones</li>
+          <li>Live route updates during emergencies</li>
+        </ul>
+      </div>
+
+      <div class="impact-card">
+        <h4>Community Preparedness</h4>
+        <ul>
+          <li>Evacuation drills for vulnerable populations</li>
+          <li>Public awareness and disaster education programs</li>
+          <li>Coordination with local authorities and responders</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Sea Level Rise Impact Dashboard · Supporting Coastal Decision-Making</p>
+  <p>Potential data sources: NASA, NOAA, World Bank, IPCC · Illustrative data</p>
+</footer>
+
+<script>
+  (function () {
+    const evacuationPlans = {
+      Low: [
+        "Stay alert and monitor updates",
+        "Avoid unnecessary coastal travel"
+      ],
+      Medium: [
+        "Prepare emergency kit",
+        "Identify safe evacuation routes",
+        "Be ready to move if conditions worsen"
+      ],
+      High: [
+        "Evacuate immediately to higher ground",
+        "Follow official evacuation routes",
+        "Avoid coastal and low-lying areas"
+      ]
+    };
+
+    const riskLevelSelect = document.getElementById("riskLevelSelect");
+    const evacuationPlanBtn = document.getElementById("evacuationPlanBtn");
+    const evacuationResult = document.getElementById("evacuationResult");
+
+    evacuationPlanBtn.addEventListener("click", function () {
+      const selectedRisk = riskLevelSelect.value;
+
+      if (!selectedRisk || !evacuationPlans[selectedRisk]) {
+        evacuationResult.innerHTML = "<p>Please select a risk level to get evacuation steps.</p>";
+        return;
+      }
+
+      const steps = evacuationPlans[selectedRisk]
+        .map(function (step) {
+          return "<li>" + step + "</li>";
+        })
+        .join("");
+
+      evacuationResult.innerHTML = "<h4>Recommended Actions</h4><ul>" + steps + "</ul>";
+    });
+  })();
+</script>
+</body>
+</html>
