@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coastal Risk Analysis | Sea Level Rise Impact Dashboard</title>
   <link rel="stylesheet" href="r-style.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
 </head>
 <body>
-
   <header>
     <nav>
       <h1>Sea Level Rise Impact Dashboard</h1>
@@ -25,14 +30,41 @@
     <a href="index.html" class="back-link">← Back to Home</a>
 
     <section class="hero">
-      <h2>Urban Coastal Risk Zoning</h2>
-      <p class="tagline">Classifying and mapping exposure for informed zoning decisions</p>
+      <h2>Coastal Risk Intelligence</h2>
+      <p class="tagline">Combining map-based exposure analysis with scenario-driven planning support</p>
       <p>
-        Coastal risk analysis divides urban coastal areas into zones based on elevation, exposure to flooding,
-        storm surge, and projected sea level rise. This zoning supports <strong>land-use planning</strong>,
-        <strong>building codes</strong>, and <strong>insurance mapping</strong>—helping communities prioritize
-        resilience investments and guide development away from high-exposure areas.
+        This section brings together interactive city risk mapping and a coastal risk
+        predictor so planners can compare exposed locations, understand likely impacts,
+        and explore response strategies for rising sea levels.
       </p>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Risk Map and City Panel</h3>
+      <p class="section-intro">Explore major Indian coastal cities, inspect their current exposure level, and reset back to the full India view at any time.</p>
+      <div class="impact-grid">
+        <article class="impact-card">
+          <h4>India Coastal Risk Map</h4>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+            <button id="resetViewBtn" type="button" style="padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#38bdf8;color:#06293f;font-weight:600;">Reset India View</button>
+          </div>
+          <div id="riskMap" style="height:460px;border-radius:12px;overflow:hidden;border:1px solid rgba(100,210,255,0.3);"></div>
+          <div style="margin-top:14px;padding:12px;border:1px solid rgba(100,210,255,0.25);border-radius:10px;background:rgba(6,23,42,0.35);">
+            <h4 style="margin:0 0 10px 0;color:#a5f3fc;">Legend</h4>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ef4444;margin-right:8px;"></span>High Risk: Frequent flooding, storm surge, and high exposure</p>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f59e0b;margin-right:8px;"></span>Medium Risk: Moderate flood stress and coastal vulnerability</p>
+            <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#10b981;margin-right:8px;"></span>Low Risk: Lower current exposure but still monitor long-term risk</p>
+          </div>
+        </article>
+
+        <article class="impact-card">
+          <h4>City Risk Summary</h4>
+          <p style="margin-top:0;">Click a city below to move the map and open its risk popup.</p>
+          <ul id="cityList" style="list-style:none;padding:0;margin:0;"></ul>
+        </article>
+      </div>
     </section>
 
     <hr class="section-separator">
@@ -87,7 +119,7 @@
         <div class="risk-card medium">
           <span class="badge">Medium Risk</span>
           <h4>Moderate Exposure</h4>
-          <p class="elevation">Elevation: <span>1–3m</span> from mean sea level</p>
+          <p class="elevation">Elevation: <span>1-3m</span> from mean sea level</p>
           <p>Periodic flooding possible; storm surge and high tides pose moderate risk. Requires elevated structures, flood-resistant design, and enhanced drainage systems.</p>
           <p class="action">→ Conditional zoning; elevation requirements; flood-proofing</p>
         </div>
@@ -165,6 +197,8 @@
     <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="risk.js"></script>
   <script>
     const seaLevelInput = document.getElementById('seaLevelInput');
     const simulateBtn = document.getElementById('simulateBtn');
@@ -177,7 +211,6 @@
     const scenarios = {
       low: {
         label: 'Low Risk',
-        summary: 'Projected rise remains below the medium-risk threshold, but coastal monitoring and basic adaptation remain important.',
         impacts: [
           'Occasional nuisance flooding may affect low-lying roads and drainage points.',
           'Saltwater intrusion risk begins to increase in vulnerable coastal systems.',
@@ -191,7 +224,6 @@
       },
       medium: {
         label: 'Medium Risk',
-        summary: 'Projected rise indicates meaningful exposure for settlements and infrastructure, requiring stronger planning controls.',
         impacts: [
           'Periodic flooding can disrupt transport, utilities, and public services.',
           'Storm surge impacts become more severe and more frequent.',
@@ -205,7 +237,6 @@
       },
       high: {
         label: 'High Risk',
-        summary: 'Projected rise reaches a critical threshold where severe coastal disruption and long-term relocation planning become likely.',
         impacts: [
           'Frequent inundation may make some coastal zones unsafe for continued development.',
           'Critical infrastructure can face prolonged outages and physical damage.',
@@ -255,6 +286,5 @@
       renderList(actionsList, scenario.actions);
     });
   </script>
-
 </body>
 </html>

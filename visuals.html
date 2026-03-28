@@ -23,7 +23,6 @@
 <main>
   <a href="index.html" class="back-link">← Back to Home</a>
 
-  <!-- HERO -->
   <section class="hero">
     <h2>Data &amp; Visualizations</h2>
     <p class="tagline">Visual insights into sea level rise trends</p>
@@ -36,7 +35,6 @@
 
   <hr class="section-separator">
 
-  <!-- INDICATORS -->
   <section>
     <h3>Key Indicators</h3>
     <p class="section-intro">
@@ -65,7 +63,6 @@
 
   <hr class="section-separator">
 
-  <!-- TRENDS -->
   <section>
     <h3>Observed Trends</h3>
     <p class="section-intro">
@@ -84,7 +81,6 @@
 
   <hr class="section-separator">
 
-  <!-- DECISION INSIGHTS -->
   <section>
     <h3>Decision-Making Insights</h3>
     <p class="section-intro">
@@ -104,7 +100,46 @@
 
   <hr class="section-separator">
 
-  <!-- FUTURE SCOPE -->
+  <section>
+    <h3>Report Coastal Risk</h3>
+    <p class="section-intro">
+      Submit an observed coastal risk report for future review and analysis.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <form>
+          <p>
+            <label for="report-location">Location</label><br>
+            <input
+              type="text"
+              id="report-location"
+              name="report-location"
+              placeholder="Enter coastal city"
+            >
+          </p>
+
+          <p>
+            <label for="report-risk-level">Risk</label><br>
+            <select id="report-risk-level" name="report-risk-level">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </p>
+
+          <p>
+            <button type="submit">Submit Report</button>
+          </p>
+        </form>
+
+        <div id="form-message"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-separator">
+
   <section>
     <h3>Future Scope</h3>
     <p class="section-intro">
@@ -144,7 +179,6 @@
 
   <hr class="section-separator">
 
-  <!-- DATA SOURCES -->
   <section>
     <h3>Potential Data Sources</h3>
     <p class="section-intro">
