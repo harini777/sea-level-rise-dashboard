@@ -22,8 +22,30 @@ app.get('/api/risk-data', (req, res) => {
 });
 
 app.post('/api/report', (req, res) => {
-  const { location, risk } = req.body;
-  const report = { location, risk };
+  const { location, risk, source } = req.body;
+  const normalizedLocation = typeof location === 'string' ? location.trim() : '';
+  const normalizedRisk = typeof risk === 'string' ? risk.trim() : '';
+  const normalizedSource = typeof source === 'string' ? source.trim() : '';
+
+  if (!normalizedLocation || !normalizedRisk) {
+    return res.status(400).json({ message: 'Location and risk are required' });
+  }
+
+  const existingReport = reports.find((report) =>
+    report.location.toLowerCase() === normalizedLocation.toLowerCase() &&
+    report.risk.toLowerCase() === normalizedRisk.toLowerCase() &&
+    (report.source || '').toLowerCase() === normalizedSource.toLowerCase()
+  );
+
+  if (existingReport) {
+    return res.status(200).json({ message: 'Duplicate report ignored', report: existingReport });
+  }
+
+  const report = {
+    location: normalizedLocation,
+    risk: normalizedRisk,
+    source: normalizedSource
+  };
 
   reports.push(report);
   res.status(201).json({ message: 'Report stored successfully', report });

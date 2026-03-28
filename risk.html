@@ -43,7 +43,7 @@
 
     <section>
       <h3>Risk Map and City Panel</h3>
-      <p class="section-intro">Explore major Indian coastal cities, inspect their current exposure level, and reset back to the full India view at any time.</p>
+      <p class="section-intro">Explore live coastal city data from the backend, inspect current exposure levels, and reset back to the full India view at any time.</p>
       <div class="impact-grid">
         <article class="impact-card">
           <h4>India Coastal Risk Map</h4>
@@ -51,6 +51,7 @@
             <button id="resetViewBtn" type="button" style="padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#38bdf8;color:#06293f;font-weight:600;">Reset India View</button>
           </div>
           <div id="riskMap" style="height:460px;border-radius:12px;overflow:hidden;border:1px solid rgba(100,210,255,0.3);"></div>
+          <p id="mapStatus" class="data-status">Loading coastal risk data...</p>
           <div style="margin-top:14px;padding:12px;border:1px solid rgba(100,210,255,0.25);border-radius:10px;background:rgba(6,23,42,0.35);">
             <h4 style="margin:0 0 10px 0;color:#a5f3fc;">Legend</h4>
             <p style="margin:6px 0;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ef4444;margin-right:8px;"></span>High Risk: Frequent flooding, storm surge, and high exposure</p>
@@ -61,8 +62,22 @@
 
         <article class="impact-card">
           <h4>City Risk Summary</h4>
-          <p style="margin-top:0;">Click a city below to move the map and open its risk popup.</p>
+          <p id="citySummaryIntro" style="margin-top:0;">Click a city below to move the map and open its risk popup.</p>
           <ul id="cityList" style="list-style:none;padding:0;margin:0;"></ul>
+        </article>
+      </div>
+    </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Submitted Reports</h3>
+      <p class="section-intro">User-submitted coastal risk reports are shown here in real time from the backend.</p>
+      <div class="impact-grid">
+        <article class="impact-card">
+          <h4>Recent Reports</h4>
+          <p id="reportsStatus" class="data-status">Loading submitted reports...</p>
+          <div id="reportsList" class="reports-list"></div>
         </article>
       </div>
     </section>
@@ -74,6 +89,11 @@
       <p class="section-intro">Estimate likely coastal impacts from projected sea level rise and review recommended planning actions instantly.</p>
       <div class="predictor-shell">
         <div class="predictor-panel">
+          <label for="locationInput">Location</label>
+          <div class="predictor-controls">
+            <input id="locationInput" type="text" placeholder="Enter coastal city">
+          </div>
+
           <label for="seaLevelInput">Sea level rise (meters)</label>
           <div class="predictor-controls">
             <input id="seaLevelInput" type="number" min="0" step="0.1" placeholder="Enter value in meters">
@@ -88,6 +108,7 @@
             <h4 id="riskLevelText">Low Risk</h4>
           </div>
           <p id="resultSummary" class="result-summary"></p>
+          <div id="reportStatus" class="report-status" aria-live="polite"></div>
 
           <div class="result-columns">
             <div class="result-list-card">
@@ -200,11 +221,13 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="risk.js"></script>
   <script>
+    const locationInput = document.getElementById('locationInput');
     const seaLevelInput = document.getElementById('seaLevelInput');
     const simulateBtn = document.getElementById('simulateBtn');
     const predictorResult = document.getElementById('predictorResult');
     const riskLevelText = document.getElementById('riskLevelText');
     const resultSummary = document.getElementById('resultSummary');
+    const reportStatus = document.getElementById('reportStatus');
     const impactList = document.getElementById('impactList');
     const actionsList = document.getElementById('actionsList');
 
@@ -259,8 +282,15 @@
       });
     }
 
-    simulateBtn.addEventListener('click', () => {
+    simulateBtn.addEventListener('click', async () => {
+      const locationValue = locationInput.value.trim();
       const seaLevelRise = Number(seaLevelInput.value);
+
+      if (!locationValue) {
+        alert('Enter a valid city');
+        locationInput.focus();
+        return;
+      }
 
       if (Number.isNaN(seaLevelRise) || seaLevelInput.value.trim() === '') {
         alert('Please enter a valid sea level rise value in meters.');
@@ -281,9 +311,45 @@
       predictorResult.className = 'predictor-result ' + scenarioKey;
       riskLevelText.textContent = scenario.label;
       resultSummary.textContent = 'For an estimated sea level rise of ' + seaLevelRise.toFixed(1) + ' meters, the projected coastal outlook is classified as ' + scenario.label + '.';
+      reportStatus.textContent = 'Sending report to server...';
+      reportStatus.className = 'report-status pending';
 
       renderList(impactList, scenario.impacts);
       renderList(actionsList, scenario.actions);
+
+      const reportBody = {
+        location: locationValue,
+        risk: scenario.label,
+        source: 'risk-predictor'
+      };
+
+      try {
+        simulateBtn.disabled = true;
+        simulateBtn.textContent = 'Simulating...';
+        const response = await fetch('http://localhost:5001/api/report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(reportBody)
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        reportStatus.textContent = 'Report sent successfully for ' + locationValue + '.';
+        reportStatus.className = 'report-status success';
+        if (typeof loadReports === 'function') {
+          loadReports();
+        }
+      } catch (error) {
+        reportStatus.textContent = 'Risk calculated, but the report could not be sent to the server.';
+        reportStatus.className = 'report-status error';
+      } finally {
+        simulateBtn.disabled = false;
+        simulateBtn.textContent = 'Simulate Impact';
+      }
     });
   </script>
 </body>
