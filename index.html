@@ -130,8 +130,13 @@
     <p>Potential data sources: NASA, NOAA, World Bank, IPCC &middot; Currently using illustrative data</p>
   </footer>
 
+  <button id="backToTopBtn" class="back-to-top" type="button" aria-label="Back to top">
+    ↑ Top
+  </button>
+
   <script>
     const liveDateTime = document.getElementById('live-datetime');
+    const backToTopBtn = document.getElementById('backToTopBtn');
 
     function updateDateTime() {
       const now = new Date();
@@ -147,7 +152,21 @@
       });
     }
 
+    function toggleBackToTopButton() {
+      backToTopBtn.classList.toggle('is-visible', window.scrollY > 240);
+    }
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    window.addEventListener('scroll', toggleBackToTopButton);
+
     updateDateTime();
+    toggleBackToTopButton();
     setInterval(updateDateTime, 1000);
   </script>
 

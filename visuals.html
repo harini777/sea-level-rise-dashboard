@@ -9,7 +9,10 @@
 <body>
 <header>
   <nav>
-    <h1>Sea Level Rise Impact Dashboard</h1>
+    <div class="header-brand">
+      <h1>Sea Level Rise Impact Dashboard</h1>
+      <p id="live-datetime" class="live-datetime" aria-live="polite"></p>
+    </div>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="risk.html">Risk Analysis</a></li>
@@ -231,6 +234,9 @@
   <p>Sea Level Rise Impact Dashboard · Supporting Coastal Decision-Making</p>
   <p>Potential data sources: NASA, NOAA, World Bank, IPCC · Illustrative data</p>
 </footer>
+<button id="backToTopBtn" class="back-to-top" type="button" aria-label="Back to top">
+  ↑ Top
+</button>
 <script>
   const reportStorageKey = "coastalRiskReports";
   const reportForm = document.getElementById("risk-report-form");
@@ -238,6 +244,22 @@
   const reportRiskLevelInput = document.getElementById("report-risk-level");
   const formMessage = document.getElementById("form-message");
   const submittedReports = document.getElementById("submitted-reports");
+  const liveDateTime = document.getElementById("live-datetime");
+  const backToTopBtn = document.getElementById("backToTopBtn");
+
+  function updateDateTime() {
+    const now = new Date();
+    liveDateTime.textContent = now.toLocaleString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    });
+  }
 
   function getStoredReports() {
     try {
@@ -308,7 +330,23 @@
     formMessage.className = "form-message success";
   });
 
+  function toggleBackToTopButton() {
+    backToTopBtn.classList.toggle("is-visible", window.scrollY > 240);
+  }
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
+  window.addEventListener("scroll", toggleBackToTopButton);
+
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
   renderReports();
+  toggleBackToTopButton();
 </script>
 </body>
 </html>
