@@ -294,6 +294,108 @@
       color: #67e8f9;
     }
 
+    #riskLevelSelect {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.8rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 210, 255, 0.28);
+      background: rgba(5, 18, 34, 0.55);
+      color: #e8f4f8;
+      font-size: 0.98rem;
+    }
+
+    #evacuationPlanBtn {
+      margin-top: 1rem;
+      padding: 0.9rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #38bdf8, #22d3ee);
+      color: #06293f;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #evacuationPlanBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.2);
+    }
+
+    .evacuation-result {
+      margin-top: 1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(100, 210, 255, 0.2);
+      background: rgba(6, 23, 42, 0.32);
+    }
+
+    .evacuation-placeholder {
+      margin: 0;
+      color: rgba(232, 244, 248, 0.85);
+    }
+
+    .evacuation-result h4 {
+      margin: 0 0 0.9rem 0;
+      font-size: 1.1rem;
+    }
+
+    .evacuation-plan-grid {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .plan-block {
+      padding: 0.95rem 1rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(100, 210, 255, 0.12);
+    }
+
+    .plan-block h5 {
+      margin: 0 0 0.65rem 0;
+      font-size: 0.98rem;
+      color: #a5f3fc;
+    }
+
+    .plan-block ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: rgba(232, 244, 248, 0.88);
+    }
+
+    .plan-block li + li {
+      margin-top: 0.45rem;
+    }
+
+    .evacuation-result.low-risk {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(6, 78, 59, 0.25);
+    }
+
+    .evacuation-result.low-risk h4 {
+      color: #6ee7b7;
+    }
+
+    .evacuation-result.medium-risk {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: rgba(120, 53, 15, 0.24);
+    }
+
+    .evacuation-result.medium-risk h4 {
+      color: #fcd34d;
+    }
+
+    .evacuation-result.high-risk {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: rgba(127, 29, 29, 0.24);
+    }
+
+    .evacuation-result.high-risk h4 {
+      color: #fca5a5;
+    }
+
     .impact-card ul {
       margin: 0;
       padding: 0 0 0 1.25rem;

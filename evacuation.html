@@ -130,7 +130,9 @@
 
         <button id="evacuationPlanBtn" type="button">Get Evacuation Plan</button>
 
-        <div id="evacuationResult" aria-live="polite" style="margin-top: 1rem;"></div>
+        <div id="evacuationResult" class="evacuation-result" aria-live="polite">
+          <p class="evacuation-placeholder">Choose a risk level to generate a detailed evacuation plan.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -188,20 +190,60 @@
 <script>
   (function () {
     const evacuationPlans = {
-      Low: [
-        "Stay alert and monitor updates",
-        "Avoid unnecessary coastal travel"
-      ],
-      Medium: [
-        "Prepare emergency kit",
-        "Identify safe evacuation routes",
-        "Be ready to move if conditions worsen"
-      ],
-      High: [
-        "Evacuate immediately to higher ground",
-        "Follow official evacuation routes",
-        "Avoid coastal and low-lying areas"
-      ]
+      Low: {
+        className: "low-risk",
+        steps: [
+          "Monitor local weather, tide, and civic alerts at regular intervals.",
+          "Review the nearest safe shelter, hospital, and higher-ground route before conditions worsen.",
+          "Keep essential items packed so your household can move quickly if warnings are upgraded."
+        ],
+        contacts: [
+          "Local municipal emergency helpline",
+          "Nearby police control room",
+          "Primary family emergency contact"
+        ],
+        safetyTips: [
+          "Avoid unnecessary travel along beaches, estuaries, and low-lying roads during heavy rain.",
+          "Keep phones charged and store copies of key documents in a waterproof pouch.",
+          "Check on older adults, children, and neighbors who may need assistance."
+        ]
+      },
+      Medium: {
+        className: "medium-risk",
+        steps: [
+          "Prepare an emergency kit with water, medicines, flashlights, and identity documents.",
+          "Move vehicles, valuables, and electrical items away from flood-prone ground floors.",
+          "Confirm evacuation routes and be ready to leave immediately if official instructions escalate."
+        ],
+        contacts: [
+          "District disaster management office",
+          "Local fire and rescue service",
+          "Nearest shelter coordination center"
+        ],
+        safetyTips: [
+          "Do not wait for visible flooding before acting if authorities issue a warning.",
+          "Keep children and pets close, and assign one family member to track updates.",
+          "Avoid driving through waterlogged streets, even if the water appears shallow."
+        ]
+      },
+      High: {
+        className: "high-risk",
+        steps: [
+          "Evacuate immediately to designated higher ground or an approved emergency shelter.",
+          "Follow official evacuation routes and instructions from local authorities without delay.",
+          "Turn off electricity and gas if safe to do so before leaving the property."
+        ],
+        contacts: [
+          "National emergency response number: 112",
+          "State disaster response force or district control room",
+          "Nearest hospital emergency desk"
+        ],
+        safetyTips: [
+          "Never walk, swim, or drive through moving floodwater.",
+          "Stay away from downed power lines, damaged buildings, and seawalls during storm surge.",
+          "Inform a trusted contact of your evacuation destination as soon as you reach safety."
+        ]
+      }
     };
 
     const riskLevelSelect = document.getElementById("riskLevelSelect");
@@ -224,22 +266,55 @@
       });
     }
 
-    evacuationPlanBtn.addEventListener("click", function () {
+    function renderEvacuationPlan() {
       const selectedRisk = riskLevelSelect.value;
+      const selectedPlan = evacuationPlans[selectedRisk];
 
-      if (!selectedRisk || !evacuationPlans[selectedRisk]) {
-        evacuationResult.innerHTML = "<p>Please select a risk level to get evacuation steps.</p>";
+      if (!selectedRisk || !selectedPlan) {
+        evacuationResult.className = "evacuation-result";
+        evacuationResult.innerHTML = "<p class=\"evacuation-placeholder\">Choose a risk level to generate a detailed evacuation plan.</p>";
         return;
       }
 
-      const steps = evacuationPlans[selectedRisk]
+      const steps = selectedPlan.steps
         .map(function (step) {
           return "<li>" + step + "</li>";
         })
         .join("");
 
-      evacuationResult.innerHTML = "<h4>Recommended Actions</h4><ul>" + steps + "</ul>";
-    });
+      const contacts = selectedPlan.contacts
+        .map(function (contact) {
+          return "<li>" + contact + "</li>";
+        })
+        .join("");
+
+      const safetyTips = selectedPlan.safetyTips
+        .map(function (tip) {
+          return "<li>" + tip + "</li>";
+        })
+        .join("");
+
+      evacuationResult.className = "evacuation-result " + selectedPlan.className;
+      evacuationResult.innerHTML =
+        "<h4>" + selectedRisk + " Risk Evacuation Plan</h4>" +
+        "<div class=\"evacuation-plan-grid\">" +
+          "<div class=\"plan-block\">" +
+            "<h5>Steps to Follow</h5>" +
+            "<ul>" + steps + "</ul>" +
+          "</div>" +
+          "<div class=\"plan-block\">" +
+            "<h5>Emergency Contacts</h5>" +
+            "<ul>" + contacts + "</ul>" +
+          "</div>" +
+          "<div class=\"plan-block\">" +
+            "<h5>Safety Tips</h5>" +
+            "<ul>" + safetyTips + "</ul>" +
+          "</div>" +
+        "</div>";
+    }
+
+    evacuationPlanBtn.addEventListener("click", renderEvacuationPlan);
+    riskLevelSelect.addEventListener("change", renderEvacuationPlan);
 
     function toggleBackToTopButton() {
       backToTopBtn.classList.toggle("is-visible", window.scrollY > 240);
