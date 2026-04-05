@@ -42,6 +42,12 @@
       gap: 1rem;
     }
 
+    .header-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
     header h1 {
       margin: 0;
       font-size: 1.5rem;
@@ -52,6 +58,13 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    .live-datetime {
+      margin: 0;
+      font-size: 0.95rem;
+      color: rgba(200, 230, 255, 0.88);
+      letter-spacing: 0.01em;
     }
 
     header ul {
@@ -308,4 +321,19 @@
       margin-top: 0.5rem;
       font-size: 0.8rem;
       color: rgba(200, 230, 255, 0.7);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        justify-content: center;
+      }
+
+      .header-brand {
+        text-align: center;
+        align-items: center;
+      }
+
+      header ul {
+        justify-content: center;
+      }
     }
