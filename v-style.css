@@ -281,6 +281,125 @@
       color: #67e8f9;
     }
 
+    #risk-report-form input,
+    #risk-report-form select {
+      width: 100%;
+      padding: 0.8rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 210, 255, 0.28);
+      background: rgba(5, 18, 34, 0.55);
+      color: #e8f4f8;
+      font-size: 0.98rem;
+    }
+
+    #risk-report-form button {
+      padding: 0.9rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #38bdf8, #22d3ee);
+      color: #06293f;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #risk-report-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.2);
+    }
+
+    .form-message {
+      min-height: 1.2rem;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .form-message.success {
+      color: #86efac;
+    }
+
+    .form-message.error {
+      color: #fca5a5;
+    }
+
+    .submitted-reports {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .empty-state {
+      margin: 0;
+      color: rgba(200, 230, 255, 0.78);
+    }
+
+    .report-entry {
+      padding: 1rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(100, 210, 255, 0.24);
+      background: rgba(6, 23, 42, 0.34);
+    }
+
+    .report-entry.low {
+      border-left: 4px solid #10b981;
+    }
+
+    .report-entry.medium {
+      border-left: 4px solid #f59e0b;
+    }
+
+    .report-entry.high {
+      border-left: 4px solid #ef4444;
+    }
+
+    .report-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .report-entry-header h5 {
+      margin: 0;
+      font-size: 1rem;
+      color: #e8f4f8;
+    }
+
+    .report-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .report-badge.low {
+      background: rgba(16, 185, 129, 0.18);
+      color: #6ee7b7;
+    }
+
+    .report-badge.medium {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fcd34d;
+    }
+
+    .report-badge.high {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+    }
+
+    .report-meta {
+      margin: 0;
+      font-size: 0.88rem;
+      color: rgba(200, 230, 255, 0.8);
+    }
+
     .impact-card ul {
       margin: 0;
       padding: 0 0 0 1.25rem;

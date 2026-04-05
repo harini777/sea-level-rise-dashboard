@@ -113,7 +113,7 @@
 
     <div class="impact-grid">
       <div class="impact-card">
-        <form>
+        <form id="risk-report-form">
           <p>
             <label for="report-location">Location</label><br>
             <input
@@ -139,6 +139,13 @@
         </form>
 
         <div id="form-message"></div>
+      </div>
+
+      <div class="impact-card">
+        <h4>Submitted Reports</h4>
+        <div id="submitted-reports" class="submitted-reports" aria-live="polite">
+          <p class="empty-state">No coastal risk reports submitted yet.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -224,5 +231,84 @@
   <p>Sea Level Rise Impact Dashboard · Supporting Coastal Decision-Making</p>
   <p>Potential data sources: NASA, NOAA, World Bank, IPCC · Illustrative data</p>
 </footer>
+<script>
+  const reportStorageKey = "coastalRiskReports";
+  const reportForm = document.getElementById("risk-report-form");
+  const reportLocationInput = document.getElementById("report-location");
+  const reportRiskLevelInput = document.getElementById("report-risk-level");
+  const formMessage = document.getElementById("form-message");
+  const submittedReports = document.getElementById("submitted-reports");
+
+  function getStoredReports() {
+    try {
+      const savedReports = localStorage.getItem(reportStorageKey);
+      return savedReports ? JSON.parse(savedReports) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveReports(reports) {
+    localStorage.setItem(reportStorageKey, JSON.stringify(reports));
+  }
+
+  function getRiskClass(riskLevel) {
+    return riskLevel.toLowerCase();
+  }
+
+  function renderReports() {
+    const reports = getStoredReports();
+
+    if (!reports.length) {
+      submittedReports.innerHTML = '<p class="empty-state">No coastal risk reports submitted yet.</p>';
+      return;
+    }
+
+    submittedReports.innerHTML = reports
+      .map((report) => `
+        <article class="report-entry ${getRiskClass(report.risk)}">
+          <div class="report-entry-header">
+            <h5>${report.location}</h5>
+            <span class="report-badge ${getRiskClass(report.risk)}">${report.risk}</span>
+          </div>
+          <p class="report-meta">Submitted on ${report.submittedAt}</p>
+        </article>
+      `)
+      .join("");
+  }
+
+  reportForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const location = reportLocationInput.value.trim();
+    const risk = reportRiskLevelInput.value;
+
+    if (!location) {
+      formMessage.textContent = "Please enter a coastal location before submitting.";
+      formMessage.className = "form-message error";
+      return;
+    }
+
+    const reports = getStoredReports();
+    const submittedAt = new Date().toLocaleString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+
+    reports.push({ location, risk, submittedAt });
+    saveReports(reports);
+    renderReports();
+
+    reportForm.reset();
+    formMessage.textContent = "Report saved locally and added to Submitted Reports.";
+    formMessage.className = "form-message success";
+  });
+
+  renderReports();
+</script>
 </body>
 </html>
