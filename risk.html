@@ -71,6 +71,42 @@
         </article>
       </div>
     </section>
+
+    <hr class="section-separator">
+
+    <section>
+      <h3>Coastal Risk Predictor</h3>
+      <p class="section-intro">Estimate a location's coastal vulnerability using elevation, distance from shoreline, and flood frequency indicators.</p>
+
+      <article class="impact-card predictor-card">
+        <h4>Predict Risk Level</h4>
+        <form id="riskPredictorForm" class="predictor-form" novalidate>
+          <div class="predictor-field">
+            <label for="elevationInput">Elevation Above Sea Level (meters)</label>
+            <input id="elevationInput" name="elevation" type="number" min="0" max="100" step="0.1" placeholder="e.g. 2.5">
+            <p id="elevationError" class="field-error" aria-live="polite"></p>
+          </div>
+
+          <div class="predictor-field">
+            <label for="distanceInput">Distance from Coast (kilometers)</label>
+            <input id="distanceInput" name="distance" type="number" min="0" max="200" step="0.1" placeholder="e.g. 4.2">
+            <p id="distanceError" class="field-error" aria-live="polite"></p>
+          </div>
+
+          <div class="predictor-field">
+            <label for="floodsInput">Flood Events per Year</label>
+            <input id="floodsInput" name="floods" type="number" min="0" max="50" step="1" placeholder="e.g. 3">
+            <p id="floodsError" class="field-error" aria-live="polite"></p>
+          </div>
+
+          <button id="predictRiskBtn" type="submit" class="predictor-button">Predict Coastal Risk</button>
+        </form>
+
+        <div id="predictorResult" class="predictor-result" aria-live="polite">
+          <p class="predictor-placeholder">Enter values above to see a risk estimate and recommended interpretation.</p>
+        </div>
+      </article>
+    </section>
   </main>
 
   <footer>

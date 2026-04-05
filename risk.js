@@ -114,3 +114,150 @@ cityRiskData.forEach((city) => {
 document.getElementById("resetViewBtn").addEventListener("click", () => {
   map.flyTo(INDIA_CENTER, INDIA_ZOOM, { duration: 1.2 });
 });
+
+const riskPredictorForm = document.getElementById("riskPredictorForm");
+const predictorResult = document.getElementById("predictorResult");
+
+const predictorFields = {
+  elevation: {
+    input: document.getElementById("elevationInput"),
+    error: document.getElementById("elevationError"),
+    min: 0,
+    max: 100,
+    label: "Elevation"
+  },
+  distance: {
+    input: document.getElementById("distanceInput"),
+    error: document.getElementById("distanceError"),
+    min: 0,
+    max: 200,
+    label: "Distance from coast"
+  },
+  floods: {
+    input: document.getElementById("floodsInput"),
+    error: document.getElementById("floodsError"),
+    min: 0,
+    max: 50,
+    label: "Flood events"
+  }
+};
+
+const resultContentByRisk = {
+  Low: {
+    className: "low-risk",
+    explanation: "Low current exposure. The site has relatively safer elevation or shoreline distance, but periodic monitoring and drainage planning still matter.",
+    summary: "Recommended focus: keep monitoring shoreline change, protect drainage systems, and review long-term adaptation plans."
+  },
+  Medium: {
+    className: "medium-risk",
+    explanation: "Moderate coastal stress. One or more indicators suggest meaningful flood exposure, so resilience upgrades and emergency readiness should be prioritized.",
+    summary: "Recommended focus: strengthen flood defenses, improve evacuation communication, and review zoning before new development."
+  },
+  High: {
+    className: "high-risk",
+    explanation: "High vulnerability. Low elevation, repeated flooding, or close coastal proximity point to a strong need for protective action and response planning.",
+    summary: "Recommended focus: prioritize protective infrastructure, relocation planning for the most exposed assets, and detailed emergency drills."
+  }
+};
+
+function setFieldError(fieldConfig, message) {
+  fieldConfig.error.textContent = message;
+  fieldConfig.input.classList.toggle("is-invalid", Boolean(message));
+  fieldConfig.input.setAttribute("aria-invalid", message ? "true" : "false");
+}
+
+function validateField(fieldConfig) {
+  const rawValue = fieldConfig.input.value.trim();
+
+  if (!rawValue) {
+    setFieldError(fieldConfig, `${fieldConfig.label} is required.`);
+    return null;
+  }
+
+  const numericValue = Number(rawValue);
+
+  if (Number.isNaN(numericValue)) {
+    setFieldError(fieldConfig, `${fieldConfig.label} must be a valid number.`);
+    return null;
+  }
+
+  if (numericValue < fieldConfig.min || numericValue > fieldConfig.max) {
+    setFieldError(
+      fieldConfig,
+      `${fieldConfig.label} must be between ${fieldConfig.min} and ${fieldConfig.max}.`
+    );
+    return null;
+  }
+
+  setFieldError(fieldConfig, "");
+  return numericValue;
+}
+
+function getRiskLevel(elevation, distance, floods) {
+  let score = 0;
+
+  if (elevation <= 1) {
+    score += 4;
+  } else if (elevation <= 3) {
+    score += 2;
+  }
+
+  if (distance <= 2) {
+    score += 4;
+  } else if (distance <= 5) {
+    score += 2;
+  }
+
+  if (floods >= 5) {
+    score += 4;
+  } else if (floods >= 2) {
+    score += 2;
+  }
+
+  if (score >= 8) {
+    return "High";
+  }
+
+  if (score >= 4) {
+    return "Medium";
+  }
+
+  return "Low";
+}
+
+function renderPredictorResult(riskLevel, values) {
+  const resultCopy = resultContentByRisk[riskLevel];
+
+  predictorResult.className = `predictor-result ${resultCopy.className}`;
+  predictorResult.innerHTML = `
+    <h5>${riskLevel} Risk</h5>
+    <p>${resultCopy.explanation}</p>
+    <p class="risk-summary">Inputs assessed: ${values.elevation} m elevation, ${values.distance} km from coast, ${values.floods} flood event(s) per year.</p>
+    <p class="risk-summary">${resultCopy.summary}</p>
+  `;
+}
+
+Object.values(predictorFields).forEach((fieldConfig) => {
+  fieldConfig.input.addEventListener("input", () => {
+    if (fieldConfig.error.textContent) {
+      validateField(fieldConfig);
+    }
+  });
+});
+
+riskPredictorForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const elevation = validateField(predictorFields.elevation);
+  const distance = validateField(predictorFields.distance);
+  const floods = validateField(predictorFields.floods);
+
+  if ([elevation, distance, floods].some((value) => value === null)) {
+    predictorResult.className = "predictor-result";
+    predictorResult.innerHTML = "<p class=\"predictor-placeholder\">Please correct the highlighted fields to calculate coastal risk.</p>";
+    return;
+  }
+
+  const riskLevel = getRiskLevel(elevation, distance, floods);
+  renderPredictorResult(riskLevel, { elevation, distance, floods });
+});
